@@ -499,7 +499,11 @@ def StartClient(address : str):
 
     SetMessageBoxText("Connecting to host...")
     temp = address.split(":")
-    client : Client = Client(temp[0], int(temp[1]), int(temp[2]))
+    client : Client
+    if(len(temp == 3)):
+        client = Client(temp[0], int(temp[1]), int(temp[2]))
+    else:
+        client = Client(temp[0], int(temp[1]))
     client.RegisterMessageID(1, MovePlayerHostTo)
     client.RegisterMessageID(3, TransferBallOwnership)
     client.RegisterMessageID(4, HostLost)
