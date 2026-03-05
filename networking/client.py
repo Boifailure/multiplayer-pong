@@ -2,7 +2,7 @@ from networking.message import Message, MessageType
 from networking.udp_transport import UDPTransport
 
 class Client:
-    def __init__(self, ip : str, port : int, incomingPort : None | int = None):
+    def __init__(self, ip : str, port : int, incomingPort : None | int = None, logMessages : bool = False):
         self.serverAddress = (ip, port)
         self.transport = UDPTransport(("0.0.0.0", incomingPort))
 
@@ -17,6 +17,8 @@ class Client:
         self.Send(joinMessage)
 
         self.connected : bool = False
+
+        self.logMessages : bool = logMessages
         
     def Send(self, message : Message) -> bool:
         if not self.transport.send(message.Serialize(), self.serverAddress):

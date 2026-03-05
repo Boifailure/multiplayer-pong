@@ -21,6 +21,9 @@ class Message:
         self.messageType : int = messageType
         self.id : int = id
     
+    def __str__(self):
+        return f"Message ({self.dataBytes})"
+
     @staticmethod
     def Deserialize(data : bytearray):
         message : Message = Message()

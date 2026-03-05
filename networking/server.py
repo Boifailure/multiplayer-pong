@@ -18,15 +18,17 @@ class Client:
         return f"(ID: {self.id}, IP: {self.ip}, Port: {self.port})"
 
 class Server:
-    def __init__(self, port : int, maxClientCount : int = 16):
+    def __init__(self, port : int, maxClientCount : int = 16, logMessages : bool = False):
         self.port : UDPTransport = port
-        self.transport : UDPTransport = UDPTransport()
+        self.transport : UDPTransport = UDPTransport(("0.0.0.0", port))
         self.clients : dict[int, Client] = {}
         self.maxClientCount : int = maxClientCount
 
         self.messageIDCallbacks = {}
         self.onClientJoin = None
         self.onClientLeave = None
+
+        self.logMessages : bool = logMessages
 
     def Send(self, message : Message, client : Client) -> bool:
         if not self.transport.send(message.Serialize(), (client.ip, client.port)):
@@ -46,6 +48,9 @@ class Server:
         for packet, ip in newPackets:
             message = Message.Deserialize(bytearray(packet))
             client = self._GetClientByIp(ip)
+
+            if self.logMessages:
+                print(str(message))
 
             match message.messageType:
 
