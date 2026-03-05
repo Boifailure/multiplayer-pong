@@ -500,7 +500,7 @@ def StartClient(address : str):
     SetMessageBoxText("Connecting to host...")
     temp = address.split(":")
     client : Client
-    if(len(temp == 3)):
+    if(len(temp) == 3):
         client = Client(temp[0], int(temp[1]), int(temp[2]))
     else:
         client = Client(temp[0], int(temp[1]))
